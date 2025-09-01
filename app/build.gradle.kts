@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.iti.graduation.recipeapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.iti.graduation.recipeapp"
