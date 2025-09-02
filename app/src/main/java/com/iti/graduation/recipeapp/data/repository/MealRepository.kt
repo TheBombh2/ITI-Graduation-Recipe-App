@@ -1,0 +1,81 @@
+package com.iti.graduation.recipeapp.data.repository
+
+import com.iti.graduation.recipeapp.data.local.dao.MealDao
+import com.iti.graduation.recipeapp.data.model.Meal
+import com.iti.graduation.recipeapp.data.model.Meals
+import com.iti.graduation.recipeapp.data.remote.RetrofitInstance
+
+class MealRepository(val mealDao: MealDao) {
+
+    //All these are remote calls to the API
+
+    //Provide ID to get a Meal Object
+    suspend fun getMealByID(id: String) : Meal?{
+        val response = RetrofitInstance.api.getMealByID(id)
+        if(response.isSuccessful){
+            return response.body()?.meals?.firstOrNull()
+        }else{
+            return null
+        }
+    }
+
+
+    //This Returns a "Meals" object that has "meals" Value
+    //This "meals" value is a list<Meal>
+    //It contains all meals in the API
+    suspend fun getAllMeals() : Meals?{
+        val allMeals = mutableListOf<Meal>()
+        for(letter in 'a'..'z'){
+            try {
+                val response = RetrofitInstance.api.getMealByFirstLetter(letter)
+                if(response.isSuccessful){
+                    val meals = response.body()?.meals
+                    if(!meals.isNullOrEmpty()){
+                        allMeals.addAll(meals)
+                    }
+                }
+            }
+            catch (e: Exception){
+
+            }
+        }
+        return Meals(allMeals)
+    }
+
+
+    //Provide any String like "S" or "Shaw"
+    //Any number of letters will work
+    //Same as before it's a "Meals" object
+    suspend fun searchForMeals(keyword: String) : Meals?{
+        val response = RetrofitInstance.api.getMealBySearch(keyword)
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+
+    //Returns a random "Meal" object
+    suspend fun getRandomMeal() : Meal?{
+        val response = RetrofitInstance.api.getRandomMeal()
+        if(response.isSuccessful){
+            return response.body()?.meals?.firstOrNull()
+        }else{
+            return null
+        }
+    }
+
+
+    //Local Database Functions
+
+    suspend fun addMealToFavorites(meal: Meal) {
+        mealDao.insertMeal(meal)
+    }
+
+    suspend fun removeMealFromFavorites(meal: Meal) {
+        mealDao.deleteMeal(meal)
+    }
+
+    suspend fun getFavoriteMeals() = mealDao.getAllMeals()
+}

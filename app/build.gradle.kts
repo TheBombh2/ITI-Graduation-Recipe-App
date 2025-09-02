@@ -1,7 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("kotlin-kapt")
 }
+
+
 
 android {
     namespace = "com.iti.graduation.recipeapp"
@@ -37,6 +40,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter)
     implementation(libs.gson)
