@@ -34,11 +34,13 @@ class AuthRepository(val userDao: UserDao,val sharedPrefManager: SharedPrefManag
 
 
     //Log out
+    //Clears sharedpref data
     fun logout() {
         sharedPrefManager.logout()
     }
 
 
+    //Saves user ID to the sharedpref
     fun saveLoginState(userID: Int) {
         sharedPrefManager.saveLoginInformation(userID)
     }
