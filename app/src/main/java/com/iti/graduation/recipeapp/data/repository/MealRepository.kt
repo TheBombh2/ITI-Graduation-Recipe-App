@@ -69,13 +69,15 @@ class MealRepository(val mealDao: MealDao) {
 
     //Local Database Functions
 
+
+    //You provide Meal object and it gets saved
     suspend fun addMealToFavorites(meal: Meal) {
         mealDao.insertMeal(meal)
     }
-
+    //You provide Meal object and it gets deleted
     suspend fun removeMealFromFavorites(meal: Meal) {
         mealDao.deleteMeal(meal)
     }
-
+    //Gets all meals in database
     suspend fun getFavoriteMeals() = mealDao.getAllMeals()
 }
