@@ -78,6 +78,9 @@ class MealRepository(val mealDao: MealDao) {
     suspend fun removeMealFromFavorites(meal: Meal) {
         mealDao.deleteMeal(meal)
     }
+    suspend fun removeFavorite(meal: Meal) {
+        mealDao.deleteMeal(meal)
+    }
     //Gets all meals in database
     suspend fun getFavoriteMeals() = mealDao.getAllMeals()
 }
