@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Recipe app</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="show_more">Show More</string>
+    <string name="show_less">Show Less</string>
+    <string name="no_favorites">No favorite meals yet</string>
+    <string name="no_results">No results found</string>
+    <string name="search_hint">Search for recipes...</string>
+    <string name="no_results_found">No results found</string>
+    <string name="category">Category:</string>
+    <string name="area">Area:</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="play_video">Play video</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="meal_image">Meal image</string>
+    <string name="no_favorite_meals_yet">No favorite meals yet</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="close_video" />
 </resources>
