@@ -29,7 +29,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Random Meal Suggestion -->
             <TextView
                 android:id="@+id/tvRandomMealTitle"
                 android:layout_width="match_parent"
@@ -74,7 +73,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Popular Meals Section -->
             <TextView
                 android:id="@+id/tvPopularMealsTitle"
                 android:layout_width="match_parent"
