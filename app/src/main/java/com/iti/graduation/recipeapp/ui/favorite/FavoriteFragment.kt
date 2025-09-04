@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.iti.graduation.recipeapp.R
+import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.databinding.FragmentFavoriteBinding
 import com.iti.graduation.recipeapp.ui.adapters.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +46,9 @@ class FavoriteFragment : Fragment() {
             },
             onRemoveClick = { meal ->
                 viewModel.removeFavorite(meal)
+            },
+            onRemoveWithConfirmation = { meal, onConfirm ->
+                showConfirmationDialog(meal, onConfirm)
             }
         )
 
@@ -51,8 +57,21 @@ class FavoriteFragment : Fragment() {
             adapter = mealAdapter
         }
     }
-
-
+    private fun showConfirmationDialog(meal: Meal, onConfirm: () -> Unit) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.confirm_removal))
+            .setMessage(getString(R.string.remove_favorite_confirmation, meal.strMeal))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+                onConfirm() // Call the removal function
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(true)
+            .create()
+            .show()
+    }
     private fun observeFavorites() {
         viewModel.favoriteMeals.observe(viewLifecycleOwner) { meals ->
             mealAdapter.submitList(meals)
