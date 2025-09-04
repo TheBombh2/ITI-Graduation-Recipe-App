@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import com.iti.graduation.recipeapp.RecipeActivity
 import com.iti.graduation.recipeapp.databinding.FragmentSearchBinding
 import com.iti.graduation.recipeapp.ui.adapters.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import com.iti.graduation.recipeapp.RecipeActivity
-
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var mealAdapter: MealAdapter
 
@@ -33,7 +35,10 @@ class SearchFragment : Fragment() {
 
         setupRecyclerView()
         setupSearchView()
-        observeSearchResults()
+        observeData()
+
+        // ✅ Load ALL meals initially
+        viewModel.loadAllMeals()
     }
 
     private fun setupRecyclerView() {
@@ -50,29 +55,37 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupSearchView() {
-        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { viewModel.searchMeals(it) }
+                query?.let {
+                    when (binding.filterChipGroup.checkedChipId) {
+                        com.iti.graduation.recipeapp.R.id.chipCategory -> viewModel.searchByCategory(it)
+                        com.iti.graduation.recipeapp.R.id.chipIngredient -> viewModel.searchByIngredient(it)
+                        com.iti.graduation.recipeapp.R.id.chipCountry -> viewModel.searchByCountry(it)
+                        else -> viewModel.searchMeals(it) // default search
+                    }
+                }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
-                    mealAdapter.submitList(emptyList())
+                    // ✅ Reset to ALL meals when search is cleared
+                    viewModel.loadAllMeals()
                 }
                 return true
             }
         })
     }
 
-    private fun observeSearchResults() {
+    private fun observeData() {
         viewModel.searchResults.observe(viewLifecycleOwner) { meals ->
             mealAdapter.submitList(meals)
             binding.tvEmpty.visibility = if (meals.isEmpty()) View.VISIBLE else View.GONE
         }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        viewModel.isLoading.observe(viewLifecycleOwner) { loading ->
+            binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
         }
     }
 
