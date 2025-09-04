@@ -61,7 +61,6 @@ class MealRepository(val mealDao: MealDao) {
         }
     }
 
-
     //Returns a random "Meal" object
     suspend fun getRandomMeal() : Meal?{
         val response = RetrofitInstance.api.getRandomMeal()
@@ -71,7 +70,6 @@ class MealRepository(val mealDao: MealDao) {
             return null
         }
     }
-
 
     //This returns "Categories" Object that has "categories" value that is List<Category>
     //That value includes all categories
@@ -92,15 +90,10 @@ class MealRepository(val mealDao: MealDao) {
     // "idMeal"
     //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
 
-    suspend fun getMealByCategory(category: Category) : Meals?{
-        val response = RetrofitInstance.api.getMealsByCategory(category.strCategory)
-        if(response.isSuccessful){
-            return response.body()
-        }else{
-            return null
-        }
+    suspend fun getMealByCategory(categoryName: String): Meals? {
+        val response = RetrofitInstance.api.getMealsByCategory(categoryName)
+        return if(response.isSuccessful) response.body() else null
     }
-
 
     //This returns "Countries" Object that has "countries" value that is List<Country>
     //That value includes all categories
@@ -120,17 +113,10 @@ class MealRepository(val mealDao: MealDao) {
     // "strMealThumb
     // "idMeal"
     //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
-    suspend fun getMealByCountry(country: Country) : Meals?{
-        val response = RetrofitInstance.api.getMealsByCountry(country.strArea)
-        if(response.isSuccessful){
-            return response.body()
-        }else{
-            return null
-        }
+    suspend fun getMealByCountry(countryName: String): Meals? {
+        val response = RetrofitInstance.api.getMealsByCountry(countryName)
+        return if(response.isSuccessful) response.body() else null
     }
-
-
-
 
     //This returns "Ingredients" Object that has "ingredients" value that is List<Ingredient>
     //That value includes all Ingredients
@@ -149,14 +135,9 @@ class MealRepository(val mealDao: MealDao) {
     // "strMeal"
     // "strMealThumb
     // "idMeal"
-    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
-    suspend fun getMealsByIngredient(ingredient: Ingredient) : Meals?{
-        val response = RetrofitInstance.api.getMealsByIngredient(ingredient.strIngredient)
-        if(response.isSuccessful){
-            return response.body()
-        }else{
-            return null
-        }
+    suspend fun getMealsByIngredient(ingredientName: String): Meals? {
+        val response = RetrofitInstance.api.getMealsByIngredient(ingredientName)
+        return if(response.isSuccessful) response.body() else null
     }
 
     //Local Database Functions
