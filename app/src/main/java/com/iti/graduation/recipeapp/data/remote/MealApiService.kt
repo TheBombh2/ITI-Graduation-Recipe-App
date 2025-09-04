@@ -1,5 +1,6 @@
 package com.iti.graduation.recipeapp.data.remote
 
+import com.iti.graduation.recipeapp.data.model.Categories
 import com.iti.graduation.recipeapp.data.model.Meals
 import retrofit2.Response
 import retrofit2.http.GET
@@ -17,5 +18,14 @@ interface MealApiService {
 
     @GET("random.php")
     suspend fun getRandomMeal(): Response<Meals>
+
+    @GET("categories.php")
+    suspend fun getAllCategories(): Response<Categories>
+
+    @GET("filter.php")
+    suspend fun getMealsByCategory(@Query("c") category: String): Response<Meals>
+
+
+
 
 }

@@ -1,6 +1,8 @@
 package com.iti.graduation.recipeapp.data.repository
 
 import com.iti.graduation.recipeapp.data.local.dao.MealDao
+import com.iti.graduation.recipeapp.data.model.Categories
+import com.iti.graduation.recipeapp.data.model.Category
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.model.Meals
 import com.iti.graduation.recipeapp.data.remote.RetrofitInstance
@@ -66,6 +68,28 @@ class MealRepository(val mealDao: MealDao) {
         }
     }
 
+
+    //This returns "Categories" Object that has "categories" value that is List<Category>
+    //That value includes all categories
+    suspend fun getAllCategoriesTypes() : Categories?{
+        val response = RetrofitInstance.api.getAllCategories()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Category" object and receive "Meals" object that has all meals
+    // under provided category
+    suspend fun getMealByCategory(category: Category) : Meals?{
+        val response = RetrofitInstance.api.getMealsByCategory(category.strCategory)
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
 
     //Local Database Functions
 
