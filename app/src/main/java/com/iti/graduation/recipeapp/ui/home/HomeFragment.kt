@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
         observeMeals()
+
         viewModel.getAllMeals()
     }
 

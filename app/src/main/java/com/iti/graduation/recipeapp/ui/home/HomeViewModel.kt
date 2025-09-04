@@ -22,6 +22,8 @@ class HomeViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     fun getAllMeals() {
+        if(!_meals.value.isNullOrEmpty())
+            return
         _isLoading.value = true
         viewModelScope.launch {
             try {
