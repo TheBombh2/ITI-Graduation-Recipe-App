@@ -27,7 +27,8 @@ abstract class MealDatabase: RoomDatabase() {
                     context.applicationContext,
                     MealDatabase::class.java,
                     "meal_database"
-                ).build()
+                ).fallbackToDestructiveMigrationFrom()
+                    .build()
                 INSTANCE = instance
                 instance
             }

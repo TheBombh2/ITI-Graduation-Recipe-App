@@ -23,7 +23,6 @@ class HomeViewModel @Inject constructor(
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
-
     // Store the random meal ID to prevent regeneration
     private var currentRandomMealId: String? = null
 
