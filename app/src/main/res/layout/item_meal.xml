@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="140dp"
     android:layout_height="160dp"
-    android:layout_margin="8dp"
+    android:layout_margin="5dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
@@ -42,7 +42,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
             android:contentDescription="@string/remove_from_favorites"
-            android:src="@drawable/ic_favorite"
+            android:src="@drawable/ic_favorite_remove"
             android:visibility="gone" />
 
     </RelativeLayout>
