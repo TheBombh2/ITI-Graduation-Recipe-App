@@ -2,6 +2,7 @@ package com.iti.graduation.recipeapp.data.remote
 
 import com.iti.graduation.recipeapp.data.model.Categories
 import com.iti.graduation.recipeapp.data.model.Countries
+import com.iti.graduation.recipeapp.data.model.Ingredients
 import com.iti.graduation.recipeapp.data.model.Meals
 import retrofit2.Response
 import retrofit2.http.GET
@@ -33,6 +34,10 @@ interface MealApiService {
     @GET("filter.php")
     suspend fun getMealsByCountry(@Query("a") country: String): Response<Meals>
 
+    @GET("list.php")
+    suspend fun getAllIngredients(@Query("i") ingredient: String = "list"): Response<Ingredients>
 
+    @GET("filter.php")
+    suspend fun getMealsByIngredient(@Query("i") ingredient: String): Response<Meals>
 
 }
