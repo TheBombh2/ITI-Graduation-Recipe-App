@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import com.iti.graduation.recipeapp.RecipeActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.iti.graduation.recipeapp.databinding.FragmentHomeBinding
 import com.iti.graduation.recipeapp.ui.adapters.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +18,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var mealAdapter: MealAdapter
+    private lateinit var popularMealAdapter: MealAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,37 +32,55 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        observeMeals()
-
-        viewModel.getAllMeals()
+        setupRandomMealClick()
+        observeData()
+        viewModel.getRandomMeal()
+        viewModel.getPopularMeals()
     }
 
     private fun setupRecyclerView() {
-        // Pass only onItemClick; onRemoveClick is omitted → favorite icon hidden
-        mealAdapter = MealAdapter(onItemClick = { meal ->
-            (activity as? RecipeActivity)?.navigateToDetail(meal.idMeal)
-        })
+        // For popular meals (horizontal layout)
+        popularMealAdapter = MealAdapter(
+            onItemClick = { meal ->
+                navigateToDetail(meal.idMeal)
+            }
+        )
 
-        binding.rvMeals.apply {
-            layoutManager = GridLayoutManager(requireContext(), 2)
-            adapter = mealAdapter
+        binding.rvPopularMeals.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularMealAdapter
         }
     }
-
-    private fun navigateToDetail(mealId: String) {
-        val actionId = com.iti.graduation.recipeapp.R.id.action_homeFragment_to_recipeDetailFragment
-        val bundle = Bundle().apply { putString("mealId", mealId) }
-        findNavController().navigate(actionId, bundle)
+    private fun setupRandomMealClick() {
+        binding.randomMealCard.setOnClickListener {
+            viewModel.randomMeal.value?.let { meal ->
+                navigateToDetail(meal.idMeal)
+            }
+        }
     }
+    private fun observeData() {
+        viewModel.randomMeal.observe(viewLifecycleOwner) { meal ->
+            meal?.let {
+                binding.tvRandomMealName.text = it.strMeal
+                Glide.with(requireContext())
+                    .load(it.strMealThumb)
+                    .centerCrop()
+                    .into(binding.ivRandomMeal)
+            }
+        }
 
-    private fun observeMeals() {
-        viewModel.meals.observe(viewLifecycleOwner) { meals ->
-            mealAdapter.submitList(meals)
+        viewModel.popularMeals.observe(viewLifecycleOwner) { meals ->
+            popularMealAdapter.submitList(meals)
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
+    }
+    private fun navigateToDetail(mealId: String) {
+        val actionId = com.iti.graduation.recipeapp.R.id.action_homeFragment_to_recipeDetailFragment
+        val bundle = Bundle().apply { putString("mealId", mealId) }
+        findNavController().navigate(actionId, bundle)
     }
 
     override fun onDestroyView() {

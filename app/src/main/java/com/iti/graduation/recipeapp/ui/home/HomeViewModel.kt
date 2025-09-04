@@ -15,22 +15,54 @@ class HomeViewModel @Inject constructor(
     private val mealRepository: MealRepository
 ) : ViewModel() {
 
-    private val _meals = MutableLiveData<List<Meal>>()
-    val meals: LiveData<List<Meal>> get() = _meals
+    private val _randomMeal = MutableLiveData<Meal?>()
+    val randomMeal: LiveData<Meal?> get() = _randomMeal
+
+    private val _popularMeals = MutableLiveData<List<Meal>>()
+    val popularMeals: LiveData<List<Meal>> get() = _popularMeals
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
+    // Store the random meal ID to prevent regeneration
+    private var currentRandomMealId: String? = null
 
-    fun getAllMeals() {
-        if(!_meals.value.isNullOrEmpty())
-            return
+    init {
+        // Load random meal only if not already loaded
+        if (_randomMeal.value == null) {
+            getRandomMeal()
+        }
+        getPopularMeals()
+    }
+
+    fun getRandomMeal() {
+        // Don't reload if we already have a random meal
+        if (_randomMeal.value != null) return
+
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val randomMeal = mealRepository.getRandomMeal()
+                randomMeal?.let {
+                    currentRandomMealId = it.idMeal
+                    _randomMeal.value = it
+                }
+            } catch (e: Exception) {
+                _randomMeal.value = null
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
+    fun getPopularMeals() {
         _isLoading.value = true
         viewModelScope.launch {
             try {
                 val allMeals = mealRepository.getAllMeals()?.meals ?: emptyList()
-                _meals.value = allMeals
+                // Filter out the current random meal from popular meals
+                val filteredMeals = allMeals.filter { it.idMeal != currentRandomMealId }.take(10)
+                _popularMeals.value = filteredMeals
             } catch (e: Exception) {
-                _meals.value = emptyList()
+                _popularMeals.value = emptyList()
             } finally {
                 _isLoading.value = false
             }

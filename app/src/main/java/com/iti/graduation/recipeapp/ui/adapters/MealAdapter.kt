@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.databinding.ItemMealBinding
+import com.iti.graduation.recipeapp.R
 
 class MealAdapter(
     private val onItemClick: (Meal) -> Unit,
@@ -33,6 +34,9 @@ class MealAdapter(
 
                 Glide.with(itemView.context)
                     .load(meal.strMealThumb)
+                    .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.placeholder_image)
+                    .centerCrop()
                     .into(ivMeal)
 
                 // Navigate to detail
