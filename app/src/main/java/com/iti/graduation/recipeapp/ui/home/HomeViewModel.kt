@@ -58,8 +58,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val allMeals = mealRepository.getAllMeals()?.meals ?: emptyList()
-                // Filter out the current random meal from popular meals
-                val filteredMeals = allMeals.filter { it.idMeal != currentRandomMealId }.take(10)
+
+                // Shuffle list to get random items, then take 10
+                val filteredMeals = allMeals
+                    .filter { it.idMeal != currentRandomMealId }
+                    .shuffled()
+                    .take(10)
+
                 _popularMeals.value = filteredMeals
             } catch (e: Exception) {
                 _popularMeals.value = emptyList()
