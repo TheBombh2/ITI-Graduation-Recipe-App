@@ -1,6 +1,12 @@
 package com.iti.graduation.recipeapp.data.repository
 
 import com.iti.graduation.recipeapp.data.local.dao.MealDao
+import com.iti.graduation.recipeapp.data.model.Categories
+import com.iti.graduation.recipeapp.data.model.Category
+import com.iti.graduation.recipeapp.data.model.Countries
+import com.iti.graduation.recipeapp.data.model.Country
+import com.iti.graduation.recipeapp.data.model.Ingredient
+import com.iti.graduation.recipeapp.data.model.Ingredients
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.model.Meals
 import com.iti.graduation.recipeapp.data.remote.RetrofitInstance
@@ -66,6 +72,92 @@ class MealRepository(val mealDao: MealDao) {
         }
     }
 
+
+    //This returns "Categories" Object that has "categories" value that is List<Category>
+    //That value includes all categories
+    suspend fun getAllCategoriesTypes() : Categories?{
+        val response = RetrofitInstance.api.getAllCategories()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Category" object and receive "Meals" object that has all meals
+    //under provided category
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+
+    suspend fun getMealByCategory(category: Category) : Meals?{
+        val response = RetrofitInstance.api.getMealsByCategory(category.strCategory)
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+
+    //This returns "Countries" Object that has "countries" value that is List<Country>
+    //That value includes all categories
+    suspend fun getAllCountries() : Countries?{
+        val response = RetrofitInstance.api.getAllCountries()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Country" object and receive "Meals" object that has all meals
+    //under provided country
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+    suspend fun getMealByCountry(country: Country) : Meals?{
+        val response = RetrofitInstance.api.getMealsByCountry(country.strArea)
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+
+
+
+    //This returns "Ingredients" Object that has "ingredients" value that is List<Ingredient>
+    //That value includes all Ingredients
+    suspend fun getAllIngredients() : Ingredients?{
+        val response = RetrofitInstance.api.getAllIngredients()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Ingredient" object and receive "Meals" object that has all meals
+    //under provided country
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+    suspend fun getMealsByIngredient(ingredient: Ingredient) : Meals?{
+        val response = RetrofitInstance.api.getMealsByIngredient(ingredient.strIngredient)
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
 
     //Local Database Functions
 
