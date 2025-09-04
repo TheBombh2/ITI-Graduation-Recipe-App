@@ -64,7 +64,6 @@ class HomeViewModel @Inject constructor(
                     .filter { it.idMeal != currentRandomMealId }
                     .shuffled()
                     .take(10)
-
                 _popularMeals.value = filteredMeals
             } catch (e: Exception) {
                 _popularMeals.value = emptyList()
