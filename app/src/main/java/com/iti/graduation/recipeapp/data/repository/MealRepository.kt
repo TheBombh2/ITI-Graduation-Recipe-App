@@ -3,6 +3,8 @@ package com.iti.graduation.recipeapp.data.repository
 import com.iti.graduation.recipeapp.data.local.dao.MealDao
 import com.iti.graduation.recipeapp.data.model.Categories
 import com.iti.graduation.recipeapp.data.model.Category
+import com.iti.graduation.recipeapp.data.model.Countries
+import com.iti.graduation.recipeapp.data.model.Country
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.model.Meals
 import com.iti.graduation.recipeapp.data.remote.RetrofitInstance
@@ -81,9 +83,43 @@ class MealRepository(val mealDao: MealDao) {
     }
 
     //Provide "Category" object and receive "Meals" object that has all meals
-    // under provided category
+    //under provided category
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+
     suspend fun getMealByCategory(category: Category) : Meals?{
         val response = RetrofitInstance.api.getMealsByCategory(category.strCategory)
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+
+    //This returns "Countries" Object that has "countries" value that is List<Country>
+    //That value includes all categories
+    suspend fun getAllCountries() : Countries?{
+        val response = RetrofitInstance.api.getAllCountries()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Country" object and receive "Meals" object that has all meals
+    //under provided country
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+    suspend fun getMealByCountry(country: Country) : Meals?{
+        val response = RetrofitInstance.api.getMealsByCountry(country.strArea)
         if(response.isSuccessful){
             return response.body()
         }else{
