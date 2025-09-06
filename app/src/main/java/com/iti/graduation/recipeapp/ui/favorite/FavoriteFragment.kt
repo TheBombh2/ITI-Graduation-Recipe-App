@@ -22,6 +22,8 @@ class FavoriteFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FavoriteViewModel by viewModels()
     private lateinit var mealAdapter: MealAdapter
+    private var currentUserId = -1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +35,10 @@ class FavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        currentUserId= (activity as? RecipeActivity)?.userId ?: -1
         setupRecyclerView()
         observeFavorites()
-        viewModel.getFavoriteMeals()
+        viewModel.getFavoriteMeals(currentUserId)
     }
 
     private fun setupRecyclerView() {
@@ -45,7 +47,7 @@ class FavoriteFragment : Fragment() {
                 (activity as? RecipeActivity)?.navigateToDetail(meal.idMeal)
             },
             onRemoveClick = { meal ->
-                viewModel.removeFavorite(meal)
+                viewModel.removeFavorite(currentUserId,meal)
             },
             onRemoveWithConfirmation = { meal, onConfirm ->
                 showConfirmationDialog(meal, onConfirm)

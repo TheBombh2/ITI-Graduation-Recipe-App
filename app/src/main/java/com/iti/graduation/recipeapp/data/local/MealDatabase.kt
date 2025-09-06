@@ -4,13 +4,15 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.iti.graduation.recipeapp.data.local.dao.MealDao
 import com.iti.graduation.recipeapp.data.local.dao.UserDao
+import com.iti.graduation.recipeapp.data.local.migrations.MIGRATION_1_2
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.model.User
+import com.iti.graduation.recipeapp.data.model.UserMealMTM
 
 
 @Database(
-    entities = [Meal::class, User::class],
-    version = 1,
+    entities = [Meal::class, User::class, UserMealMTM::class],
+    version = 2,
     exportSchema = false
 )
 abstract class MealDatabase: RoomDatabase() {
@@ -27,7 +29,7 @@ abstract class MealDatabase: RoomDatabase() {
                     context.applicationContext,
                     MealDatabase::class.java,
                     "meal_database"
-                ).fallbackToDestructiveMigrationFrom()
+                ).addMigrations(MIGRATION_1_2)
                     .build()
                 INSTANCE = instance
                 instance

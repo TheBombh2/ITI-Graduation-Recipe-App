@@ -14,7 +14,7 @@ class RecipeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeBinding
     private lateinit var navController: NavController
 
-    var userId:String? = null
+    var userId:Int? = null
     var userName:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class RecipeActivity : AppCompatActivity() {
         binding = ActivityRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userId = intent.getStringExtra("user_id")
+        userId = intent.getIntExtra("user_id",-1)
         userName = intent.getStringExtra("user_name")
 
         setupNavigation()

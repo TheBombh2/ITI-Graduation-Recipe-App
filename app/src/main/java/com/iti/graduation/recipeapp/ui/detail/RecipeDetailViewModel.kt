@@ -21,33 +21,34 @@ class RecipeDetailViewModel @Inject constructor(
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> get() = _isFavorite
 
-    fun getMealDetails(mealId: String) {
+    fun getMealDetails(userId:Int = -1,mealId: String) {
         viewModelScope.launch {
             val mealDetails = mealRepository.getMealByID(mealId)
             _meal.value = mealDetails
 
             // Check if meal is favorite
             mealDetails?.let {
-                checkIfFavorite(it)
+                checkIfFavorite(userId,mealId)
             }
         }
     }
 
-    private fun checkIfFavorite(meal: Meal) {
+    private fun checkIfFavorite(userId:Int,mealId: String) {
         viewModelScope.launch {
-            val favoriteMeals = mealRepository.getFavoriteMeals()
-            _isFavorite.value = favoriteMeals.any { it.idMeal == meal.idMeal }
+            val favorite = mealRepository.isMealFavorite(userId,mealId)
+            _isFavorite.value = favorite
         }
     }
 
-    fun toggleFavorite() {
+    fun toggleFavorite(userId: Int) {
         _meal.value?.let { meal ->
             viewModelScope.launch {
                 if (_isFavorite.value == true) {
-                    mealRepository.removeFavorite(meal)
+                    mealRepository.removeFavorite(userId,meal)
+                    mealRepository.removeMealFromFavorites(meal)
                     _isFavorite.value = false
                 } else {
-                    mealRepository.addMealToFavorites(meal)
+                    mealRepository.addMealToFavorites(userId,meal)
                     _isFavorite.value = true
                 }
             }
