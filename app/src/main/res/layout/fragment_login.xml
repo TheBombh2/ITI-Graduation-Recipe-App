@@ -74,6 +74,7 @@ app:layout_constraintTop_toBottomOf="@id/toolbar"
             android:hint="@string/email_placeholder"
             android:gravity="center_vertical|center_horizontal"
             android:paddingTop="20dp"
+            android:text="belal@test.com"
 
 
 
@@ -124,6 +125,7 @@ app:layout_constraintTop_toBottomOf="@id/toolbar"
             android:gravity="center_vertical|center_horizontal"
             android:paddingTop="20dp"
             android:hint="@string/pass_place_holder"
+            android:text="123456"
 
 
 
