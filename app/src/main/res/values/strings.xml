@@ -40,4 +40,9 @@
     <string name="sign_up_title_text">Sign Up</string>
     <string name="username_text">Username</string>
     <string name="username_placeholder">Belal Salem</string>
+    <string name="category_text">Category</string>
+    <string name="ingredient_text">Ingredient</string>
+    <string name="country_text">Country</string>
+    <string name="no_meals_found_text">No meals found</string>
+    <string name="filter_image">Filter Image</string>
 </resources>

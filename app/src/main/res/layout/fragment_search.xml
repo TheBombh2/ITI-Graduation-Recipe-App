@@ -35,7 +35,8 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="@string/category_text"
+            android:textColor="@color/white"
             app:chipBackgroundColor="@drawable/chip_selector" />
 
         <com.google.android.material.chip.Chip
@@ -43,7 +44,9 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingredient"
+            android:text="@string/ingredient_text"
+
+            android:textColor="@color/white"
             app:chipBackgroundColor="@drawable/chip_selector" />
 
         <com.google.android.material.chip.Chip
@@ -51,10 +54,23 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Country"
+            android:text="@string/country_text"
+
+            android:textColor="@color/white"
             app:chipBackgroundColor="@drawable/chip_selector" />
 
     </com.google.android.material.chip.ChipGroup>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFilterOptions"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:visibility="gone"
+        android:clipToPadding="false"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        tools:listitem="@layout/item_filter_option" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -69,7 +85,7 @@
         android:id="@+id/tvEmpty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No meals found"
+        android:text="@string/no_meals_found_text"
         android:gravity="center"
         android:visibility="gone"
         android:textSize="16sp"
