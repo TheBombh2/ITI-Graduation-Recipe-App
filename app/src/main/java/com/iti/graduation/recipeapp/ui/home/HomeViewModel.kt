@@ -54,6 +54,7 @@ class HomeViewModel @Inject constructor(
         }
     }
     fun getPopularMeals() {
+        if(!_popularMeals.value.isNullOrEmpty()) return
         _isLoading.value = true
         viewModelScope.launch {
             try {

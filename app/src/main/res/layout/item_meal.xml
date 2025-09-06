@@ -5,7 +5,8 @@
     android:layout_height="160dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,8 +43,9 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
             android:contentDescription="@string/remove_from_favorites"
-            android:src="@drawable/ic_favorite_remove"
-            android:visibility="gone" />
+            android:src="@drawable/heart_filled"
+            app:tint="@color/red_pink"
+             />
 
     </RelativeLayout>
 

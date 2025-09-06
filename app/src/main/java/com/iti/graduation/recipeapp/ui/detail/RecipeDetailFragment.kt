@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.iti.graduation.recipeapp.databinding.FragmentRecipeDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.iti.graduation.recipeapp.data.model.Meal
+import com.iti.graduation.recipeapp.R
 @AndroidEntryPoint
 class RecipeDetailFragment : Fragment() {
     private var _binding: FragmentRecipeDetailBinding? = null
@@ -34,6 +36,8 @@ class RecipeDetailFragment : Fragment() {
         mealId = arguments?.getString("mealId")
         mealId?.let { viewModel.getMealDetails(it) }
 
+
+
         observeMealDetails()
         setupClickListeners()
     }
@@ -44,7 +48,12 @@ class RecipeDetailFragment : Fragment() {
         }
 
         viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
-            binding.btnFavorite.isSelected = isFavorite
+            if(isFavorite){
+                binding.btnFavorite.setImageResource(R.drawable.heart_filled)
+            }
+            else{
+                binding.btnFavorite.setImageResource(R.drawable.heart_outlined)
+            }
         }
     }
 

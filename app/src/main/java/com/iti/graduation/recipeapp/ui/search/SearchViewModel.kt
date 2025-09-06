@@ -4,17 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.iti.graduation.recipeapp.data.model.Category
+import com.iti.graduation.recipeapp.data.model.Country
+import com.iti.graduation.recipeapp.data.model.Ingredient
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.repository.MealRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import com.iti.graduation.recipeapp.RecipeActivity
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val mealRepository: MealRepository
 ) : ViewModel() {
+
+   lateinit var  allMealsFirstLoad:List<Meal>
 
     private val _searchResults = MutableLiveData<List<Meal>>()
     val searchResults: LiveData<List<Meal>> get() = _searchResults
@@ -23,14 +28,14 @@ class SearchViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     // Optional filters data (if you want to populate dropdowns/spinners later)
-    private val _categories = MutableLiveData<List<String>>()
-    val categories: LiveData<List<String>> get() = _categories
+    private val _categories = MutableLiveData<List<Category>>()
+    val categories: LiveData<List<Category>> get() = _categories
 
-    private val _ingredients = MutableLiveData<List<String>>()
-    val ingredients: LiveData<List<String>> get() = _ingredients
+    //private val _ingredients = MutableLiveData<List<Ingredient>>()
+    //val ingredients: LiveData<List<Ingredient>> get() = _ingredients
 
-    private val _countries = MutableLiveData<List<String>>()
-    val countries: LiveData<List<String>> get() = _countries
+    private val _countries = MutableLiveData<List<Country>>()
+    val countries: LiveData<List<Country>> get() = _countries
 
     init {
         loadAllMeals()
@@ -99,10 +104,15 @@ class SearchViewModel @Inject constructor(
 
     /** 🎲 Load 10 random meals on start */
     fun loadAllMeals() {
+        if(!_searchResults.value.isNullOrEmpty()){
+            _searchResults.value = allMealsFirstLoad
+            return
+        }
         _isLoading.value = true
         viewModelScope.launch {
             try {
                 val allMeals = mealRepository.getAllMeals()?.meals ?: emptyList()
+                allMealsFirstLoad = allMeals
                 _searchResults.value = allMeals
             } catch (_: Exception) {
                 _searchResults.value = emptyList()
@@ -117,20 +127,16 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val categoriesList = mealRepository.getAllCategoriesTypes()
-                    ?.categories?.map { it.strCategory } ?: emptyList()
-                _categories.value = categoriesList
+                _categories.value = categoriesList?.categories
 
-                val ingredientsList = mealRepository.getAllIngredients()
-                    ?.ingredients?.map { it.strIngredient } ?: emptyList()
-                _ingredients.value = ingredientsList
+                //val ingredientsList = mealRepository.getAllIngredients()
+                //_ingredients.value = ingredientsList?.ingredients
 
                 val countriesList = mealRepository.getAllCountries()
-                    ?.countries?.map { it.strArea } ?: emptyList()
-                _countries.value = countriesList
+                _countries.value = countriesList?.countries
 
             } catch (_: Exception) {
                 _categories.value = emptyList()
-                _ingredients.value = emptyList()
                 _countries.value = emptyList()
             }
         }

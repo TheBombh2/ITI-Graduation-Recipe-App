@@ -8,10 +8,15 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.iti.graduation.recipeapp.RecipeActivity
 import com.iti.graduation.recipeapp.databinding.FragmentSearchBinding
+import com.iti.graduation.recipeapp.ui.adapters.FilterAdapter
 import com.iti.graduation.recipeapp.ui.adapters.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import com.iti.graduation.recipeapp.R
+import com.iti.graduation.recipeapp.data.model.Category
+import com.iti.graduation.recipeapp.data.model.Country
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -21,6 +26,9 @@ class SearchFragment : Fragment() {
 
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var mealAdapter: MealAdapter
+
+    private var currentFilterType: String? = null
+    private lateinit var filterAdapter: FilterAdapter<*>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +60,35 @@ class SearchFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = mealAdapter
         }
+
+
+        binding.filterChipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
+            if (checkedIds.isEmpty()) {
+
+                binding.rvFilterOptions.visibility = View.GONE
+                binding.searchView.setQuery(" ", true)
+                viewModel.loadAllMeals()
+                return@setOnCheckedStateChangeListener
+            }
+                val checkedId = checkedIds[0]
+                when(checkedId){
+                    R.id.chipCountry -> {
+                        showFilters(viewModel.countries.value?:emptyList(),"country")
+                        binding.rvFilterOptions.visibility = View.VISIBLE
+                    }
+                    R.id.chipCategory -> {
+                        showFilters(viewModel.categories.value?:emptyList(),"category")
+                        binding.rvFilterOptions.visibility = View.VISIBLE
+                    }
+                    R.id.chipIngredient -> {
+                        binding.rvFilterOptions.visibility = View.GONE
+                    }
+
+
+
+
+            }
+        }
     }
 
     private fun setupSearchView() {
@@ -59,9 +96,9 @@ class SearchFragment : Fragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     when (binding.filterChipGroup.checkedChipId) {
-                        com.iti.graduation.recipeapp.R.id.chipCategory -> viewModel.searchByCategory(it)
-                        com.iti.graduation.recipeapp.R.id.chipIngredient -> viewModel.searchByIngredient(it)
-                        com.iti.graduation.recipeapp.R.id.chipCountry -> viewModel.searchByCountry(it)
+                        R.id.chipCategory -> {viewModel.searchByCategory(it)}
+                        R.id.chipIngredient -> viewModel.searchByIngredient(it)
+                        R.id.chipCountry -> viewModel.searchByCountry(it)
                         else -> viewModel.searchMeals(it) // default search
                     }
                 }
@@ -70,7 +107,7 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
-                    // ✅ Reset to ALL meals when search is cleared
+
                     viewModel.loadAllMeals()
                 }
                 return true
@@ -93,4 +130,27 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun showFilters(items: List<Any>, type: String) {
+        if(items.isEmpty()) return
+
+
+        currentFilterType = type
+
+        filterAdapter = FilterAdapter(items) { selected ->
+            val query = when(selected) {
+                is Category -> selected.strCategory
+                is Country -> selected.strArea
+                is String -> selected // For ingredients
+                else -> ""
+            }
+            binding.searchView.setQuery(query, true)
+        }
+
+        binding.rvFilterOptions.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = filterAdapter
+        }
+    }
+
 }
