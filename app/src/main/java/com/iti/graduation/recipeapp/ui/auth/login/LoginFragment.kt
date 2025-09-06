@@ -1,13 +1,11 @@
-package com.iti.graduation.recipeapp.ui.auth
+package com.iti.graduation.recipeapp.ui.auth.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.iti.graduation.recipeapp.R
-
-
 
 class LoginFragment : Fragment() {
 
