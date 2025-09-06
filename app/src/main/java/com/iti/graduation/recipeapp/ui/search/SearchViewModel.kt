@@ -16,6 +16,8 @@ class SearchViewModel @Inject constructor(
     private val mealRepository: MealRepository
 ) : ViewModel() {
 
+   lateinit var  allMealsFirstLoad:List<Meal>
+
     private val _searchResults = MutableLiveData<List<Meal>>()
     val searchResults: LiveData<List<Meal>> get() = _searchResults
 
@@ -99,10 +101,15 @@ class SearchViewModel @Inject constructor(
 
     /** 🎲 Load 10 random meals on start */
     fun loadAllMeals() {
+        if(!_searchResults.value.isNullOrEmpty()){
+            _searchResults.value = allMealsFirstLoad
+            return
+        }
         _isLoading.value = true
         viewModelScope.launch {
             try {
                 val allMeals = mealRepository.getAllMeals()?.meals ?: emptyList()
+                allMealsFirstLoad = allMeals
                 _searchResults.value = allMeals
             } catch (_: Exception) {
                 _searchResults.value = emptyList()
