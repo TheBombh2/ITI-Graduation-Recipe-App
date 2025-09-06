@@ -45,4 +45,6 @@
     <string name="country_text">Country</string>
     <string name="no_meals_found_text">No meals found</string>
     <string name="filter_image">Filter Image</string>
+    <string name="recipe_master">Recipe Master</string>
+    <string name="splash_description_text">Cook Smarter, Eat Better</string>
 </resources>
