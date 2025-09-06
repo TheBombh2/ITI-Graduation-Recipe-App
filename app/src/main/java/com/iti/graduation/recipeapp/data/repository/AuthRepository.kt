@@ -12,8 +12,9 @@ class AuthRepository(val userDao: UserDao,val sharedPrefManager: SharedPrefManag
     //Then to automatically sign them In use the loginUser function
     //You already have the user object so trigger this function with email and password
     // after registering
-    suspend fun registerUser(user: User) {
-        userDao.insertUser(user)
+    suspend fun registerUser(user: User): Boolean {
+        val result = userDao.insertUser(user)
+        return result > 0
     }
 
 
