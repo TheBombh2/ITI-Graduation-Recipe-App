@@ -8,6 +8,7 @@ import com.iti.graduation.recipeapp.data.model.User
 import com.iti.graduation.recipeapp.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.internal.userAgent
 import javax.inject.Inject
 @HiltViewModel
 
@@ -33,14 +34,14 @@ class LoginViewModel @Inject constructor(
                 }
                 else{
                     _error.value = "Check your Email and Password"
+                    _isLoading.value = false
                 }
             }
             catch (e: Exception){
                 _error.value = "${e.message}"
-            }
-            finally {
                 _isLoading.value = false
             }
+
 
         }
     }
