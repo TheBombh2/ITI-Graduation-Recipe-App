@@ -33,6 +33,10 @@ class AuthRepository(val userDao: UserDao,val sharedPrefManager: SharedPrefManag
         }
     }
 
+    suspend fun getUserById(id: Int): User? {
+        return userDao.getUserById(id)
+    }
+
 
     //Log out
     //Clears sharedpref data
