@@ -80,4 +80,7 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")  // Needed for Retrofit
     implementation("com.google.android.exoplayer:exoplayer:2.19.1") //Use ExoPlayer for video playback
+
+    implementation("com.airbnb.android:lottie:6.0.0")
+
 }

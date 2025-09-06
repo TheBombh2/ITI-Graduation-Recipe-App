@@ -1,6 +1,7 @@
 package com.iti.graduation.recipeapp
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -36,6 +37,15 @@ class RecipeActivity : AppCompatActivity() {
 
         // Setup bottom navigation with navController
         binding.bottomNavigation.setupWithNavController(navController)
+
+        // Listener to hide bottom nav on splash, show on other screens
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.splashFragment) {
+                binding.bottomNavigation.visibility = View.GONE
+            } else {
+                binding.bottomNavigation.visibility = View.VISIBLE
+            }
+        }
     }
 
     //Navigate to RecipeDetailFragment with a mealId argument
