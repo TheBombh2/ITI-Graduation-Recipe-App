@@ -169,7 +169,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            app:srcCompat="@drawable/ic_favorite_border"
+            app:srcCompat="@drawable/heart_outlined"
             android:backgroundTint="@color/pink"
             app:tint="@color/red_pink"
             android:contentDescription="@string/add_to_favorites"

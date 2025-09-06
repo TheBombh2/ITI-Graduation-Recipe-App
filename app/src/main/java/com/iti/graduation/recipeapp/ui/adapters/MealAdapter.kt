@@ -46,7 +46,7 @@ class MealAdapter(
                 // Show remove button only if needed
                 if (onRemoveClick != null || onRemoveWithConfirmation != null) {
                     ivFavorite.visibility = View.VISIBLE
-                    ivFavorite.setImageResource(R.drawable.ic_favorite_remove) // ✅ custom drawable for remove
+
 
                     ivFavorite.setOnClickListener {
                         if (onRemoveWithConfirmation != null) {

@@ -43,8 +43,9 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="8dp"
             android:contentDescription="@string/remove_from_favorites"
-            android:src="@drawable/ic_favorite_remove"
-            android:visibility="gone" />
+            android:src="@drawable/heart_filled"
+            app:tint="@color/red_pink"
+             />
 
     </RelativeLayout>
 
