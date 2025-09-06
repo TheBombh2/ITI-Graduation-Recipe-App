@@ -14,10 +14,16 @@ class RecipeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecipeBinding
     private lateinit var navController: NavController
 
+    var userId:String? = null
+    var userName:String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        userId = intent.getStringExtra("user_id")
+        userName = intent.getStringExtra("user_name")
 
         setupNavigation()
     }

@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.iti.graduation.recipeapp.RecipeActivity
 import com.iti.graduation.recipeapp.databinding.FragmentHomeBinding
 import com.iti.graduation.recipeapp.ui.adapters.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +33,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val currentUserName = (activity as RecipeActivity).userName
+        currentUserName?.let {
+            binding.toolbar.title = "Hi! ${it}"
+        }
+
         setupRecyclerView()
         setupRandomMealClick()
         observeData()
@@ -47,7 +54,7 @@ class HomeFragment : Fragment() {
         )
 
         binding.rvPopularMeals.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = GridLayoutManager(requireContext(),2, LinearLayoutManager.VERTICAL, false)
             adapter = popularMealAdapter
         }
     }
