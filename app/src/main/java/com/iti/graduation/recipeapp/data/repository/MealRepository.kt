@@ -2,13 +2,11 @@ package com.iti.graduation.recipeapp.data.repository
 
 import com.iti.graduation.recipeapp.data.local.dao.MealDao
 import com.iti.graduation.recipeapp.data.model.Categories
-import com.iti.graduation.recipeapp.data.model.Category
 import com.iti.graduation.recipeapp.data.model.Countries
-import com.iti.graduation.recipeapp.data.model.Country
-import com.iti.graduation.recipeapp.data.model.Ingredient
 import com.iti.graduation.recipeapp.data.model.Ingredients
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.model.Meals
+import com.iti.graduation.recipeapp.data.model.UserMealMTM
 import com.iti.graduation.recipeapp.data.remote.RetrofitInstance
 
 class MealRepository(val mealDao: MealDao) {
@@ -144,16 +142,20 @@ class MealRepository(val mealDao: MealDao) {
 
 
     //You provide Meal object and it gets saved
-    suspend fun addMealToFavorites(meal: Meal) {
+    suspend fun addMealToFavorites(user: Int, meal: Meal) {
         mealDao.insertMeal(meal)
+        mealDao.insertUserMeal(UserMealMTM(user,meal.idMeal))
     }
     //You provide Meal object and it gets deleted
     suspend fun removeMealFromFavorites(meal: Meal) {
         mealDao.deleteMeal(meal)
     }
-    suspend fun removeFavorite(meal: Meal) {
-        mealDao.deleteMeal(meal)
+    suspend fun removeFavorite(user: Int, meal: Meal) {
+        mealDao.removeUserMeal(user,meal.idMeal)
     }
     //Gets all meals in database
-    suspend fun getFavoriteMeals() = mealDao.getAllMeals()
+    suspend fun getFavoriteMeals(user: Int) = mealDao.getMealsForUser(user)
+
+    suspend fun isMealFavorite(userId: Int, mealId: String) =
+        mealDao.isMealFavoriteForUser(userId, mealId)
 }

@@ -18,17 +18,18 @@ class FavoriteViewModel @Inject constructor(
     private val _favoriteMeals = MutableLiveData<List<Meal>>()
     val favoriteMeals: LiveData<List<Meal>> get() = _favoriteMeals
 
-    fun getFavoriteMeals() {
+    fun getFavoriteMeals(userId:Int) {
         viewModelScope.launch {
-            val favorites = mealRepository.getFavoriteMeals()
+            val favorites = mealRepository.getFavoriteMeals(userId)
             _favoriteMeals.value = favorites
         }
     }
 
-    fun removeFavorite(meal: Meal) {
+    fun removeFavorite(userId: Int,meal: Meal) {
         viewModelScope.launch {
-            mealRepository.removeFavorite(meal)
-            getFavoriteMeals()
+            mealRepository.removeFavorite(userId,meal)
+            mealRepository.removeMealFromFavorites(meal)
+            getFavoriteMeals(userId)
         }
     }
 }

@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
 import android.webkit.WebViewClient
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -14,6 +12,8 @@ import com.iti.graduation.recipeapp.databinding.FragmentRecipeDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.R
+import com.iti.graduation.recipeapp.RecipeActivity
+
 @AndroidEntryPoint
 class RecipeDetailFragment : Fragment() {
     private var _binding: FragmentRecipeDetailBinding? = null
@@ -21,6 +21,8 @@ class RecipeDetailFragment : Fragment() {
     private val viewModel: RecipeDetailViewModel by viewModels()
 
     private var mealId: String? = null
+
+    var currentUserId:Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +34,9 @@ class RecipeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        currentUserId = (activity as? RecipeActivity)?.userId ?: -1
         mealId = arguments?.getString("mealId")
-        mealId?.let { viewModel.getMealDetails(it) }
+        mealId?.let { viewModel.getMealDetails(userId =  currentUserId, mealId = it) }
 
 
 
@@ -73,7 +75,7 @@ class RecipeDetailFragment : Fragment() {
 
     private fun setupClickListeners() {
         binding.btnFavorite.setOnClickListener {
-            viewModel.toggleFavorite()
+            viewModel.toggleFavorite(userId =currentUserId )
         }
 
         // Play video using WebView overlay
