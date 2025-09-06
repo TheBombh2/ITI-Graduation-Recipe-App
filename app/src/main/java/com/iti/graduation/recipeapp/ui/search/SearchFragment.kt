@@ -37,7 +37,7 @@ class SearchFragment : Fragment() {
         setupSearchView()
         observeData()
 
-        // ✅ Load ALL meals initially
+        // Load ALL meals initially
         viewModel.loadAllMeals()
     }
 
