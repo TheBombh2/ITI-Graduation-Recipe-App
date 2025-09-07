@@ -1,8 +1,12 @@
 package com.iti.graduation.recipeapp.data.repository
 
 import com.iti.graduation.recipeapp.data.local.dao.MealDao
+import com.iti.graduation.recipeapp.data.model.Categories
+import com.iti.graduation.recipeapp.data.model.Countries
+import com.iti.graduation.recipeapp.data.model.Ingredients
 import com.iti.graduation.recipeapp.data.model.Meal
 import com.iti.graduation.recipeapp.data.model.Meals
+import com.iti.graduation.recipeapp.data.model.UserMealMTM
 import com.iti.graduation.recipeapp.data.remote.RetrofitInstance
 
 class MealRepository(val mealDao: MealDao) {
@@ -55,7 +59,6 @@ class MealRepository(val mealDao: MealDao) {
         }
     }
 
-
     //Returns a random "Meal" object
     suspend fun getRandomMeal() : Meal?{
         val response = RetrofitInstance.api.getRandomMeal()
@@ -66,18 +69,93 @@ class MealRepository(val mealDao: MealDao) {
         }
     }
 
+    //This returns "Categories" Object that has "categories" value that is List<Category>
+    //That value includes all categories
+    suspend fun getAllCategoriesTypes() : Categories?{
+        val response = RetrofitInstance.api.getAllCategories()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Category" object and receive "Meals" object that has all meals
+    //under provided category
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+
+    suspend fun getMealByCategory(categoryName: String): Meals? {
+        val response = RetrofitInstance.api.getMealsByCategory(categoryName)
+        return if(response.isSuccessful) response.body() else null
+    }
+
+    //This returns "Countries" Object that has "countries" value that is List<Country>
+    //That value includes all categories
+    suspend fun getAllCountries() : Countries?{
+        val response = RetrofitInstance.api.getAllCountries()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Country" object and receive "Meals" object that has all meals
+    //under provided country
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    //TO GET MORE DETAILS YOU NEED TO USE "getMealByID(idMeal)"
+    suspend fun getMealByCountry(countryName: String): Meals? {
+        val response = RetrofitInstance.api.getMealsByCountry(countryName)
+        return if(response.isSuccessful) response.body() else null
+    }
+
+    //This returns "Ingredients" Object that has "ingredients" value that is List<Ingredient>
+    //That value includes all Ingredients
+    suspend fun getAllIngredients() : Ingredients?{
+        val response = RetrofitInstance.api.getAllIngredients()
+        if(response.isSuccessful){
+            return response.body()
+        }else{
+            return null
+        }
+    }
+
+    //Provide "Ingredient" object and receive "Meals" object that has all meals
+    //under provided country
+    //PLEASE NOTE THAT THE MEALS RETURNED ONLY HAVE THESE THREE PROPERTIES
+    // "strMeal"
+    // "strMealThumb
+    // "idMeal"
+    suspend fun getMealsByIngredient(ingredientName: String): Meals? {
+        val response = RetrofitInstance.api.getMealsByIngredient(ingredientName)
+        return if(response.isSuccessful) response.body() else null
+    }
 
     //Local Database Functions
 
 
     //You provide Meal object and it gets saved
-    suspend fun addMealToFavorites(meal: Meal) {
+    suspend fun addMealToFavorites(user: Int, meal: Meal) {
         mealDao.insertMeal(meal)
+        mealDao.insertUserMeal(UserMealMTM(user,meal.idMeal))
     }
     //You provide Meal object and it gets deleted
     suspend fun removeMealFromFavorites(meal: Meal) {
         mealDao.deleteMeal(meal)
     }
+    suspend fun removeFavorite(user: Int, meal: Meal) {
+        mealDao.removeUserMeal(user,meal.idMeal)
+    }
     //Gets all meals in database
-    suspend fun getFavoriteMeals() = mealDao.getAllMeals()
+    suspend fun getFavoriteMeals(user: Int) = mealDao.getMealsForUser(user)
+
+    suspend fun isMealFavorite(userId: Int, mealId: String) =
+        mealDao.isMealFavoriteForUser(userId, mealId)
 }

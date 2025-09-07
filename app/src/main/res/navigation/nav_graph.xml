@@ -3,41 +3,72 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/splashFragment">
 
-    <!-- Home -->
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.iti.graduation.recipeapp.ui.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" />
-
-    <!-- Favorites -->
-    <fragment
-        android:id="@+id/favoriteFragment"
-        android:name="com.iti.graduation.recipeapp.ui.FavoriteFragment"
-        android:label="Favorites"
-        tools:layout="@layout/fragment_favorite" />
-
-    <!-- Search -->
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.iti.graduation.recipeapp.ui.SearchFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_search" />
-
-    <!-- Recipe Detail -->
-    <fragment
-        android:id="@+id/recipeDetailFragment"
-        android:name="com.iti.graduation.recipeapp.ui.RecipeDetailFragment"
-        android:label="Recipe Detail"
-        tools:layout="@layout/fragment_recipe_detail" />
-
-    <!-- About -->
+<!-- About -->
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.iti.graduation.recipeapp.ui.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.iti.graduation.recipeapp.ui.auth.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_recipeDetailFragment"
+        app:destination="@id/recipeDetailFragment" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.iti.graduation.recipeapp.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_homeFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipeDetailFragment"
+        android:name="com.iti.graduation.recipeapp.ui.detail.RecipeDetailFragment"
+        android:label="Recipe Details"
+        tools:layout="@layout/fragment_recipe_detail">
+
+        <argument
+            android:name="mealId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.iti.graduation.recipeapp.ui.favorite.FavoriteFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorite">
+
+        <action
+            android:id="@+id/action_favoriteFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.iti.graduation.recipeapp.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/action_searchFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+    </fragment>
 
 </navigation>
