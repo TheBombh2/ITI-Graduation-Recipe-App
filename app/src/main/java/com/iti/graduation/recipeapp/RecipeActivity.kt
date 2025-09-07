@@ -1,8 +1,6 @@
 package com.iti.graduation.recipeapp
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -68,11 +66,13 @@ class RecipeActivity : AppCompatActivity() {
         }
         navController.navigate(R.id.action_global_recipeDetailFragment, bundle)
     }
-    fun playVideo(url: String) {
+    /*fun playVideo(url: String) {
         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
         intent.data = android.net.Uri.parse(url)
         startActivity(intent)
     }
+    */
+
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
