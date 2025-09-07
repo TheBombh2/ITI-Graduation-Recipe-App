@@ -23,11 +23,20 @@ class RecipeActivity : AppCompatActivity() {
         binding = ActivityRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        userId = intent.getIntExtra("user_id",-1)
+        userId = intent.getIntExtra("user_id", -1)
         userName = intent.getStringExtra("user_name")
 
+
         setupNavigation()
+
+
+
+
     }
+
+
+
+
 
     private fun setupNavigation() {
         // Find the NavHostFragment from the layout
@@ -48,6 +57,7 @@ class RecipeActivity : AppCompatActivity() {
         }
     }
 
+
     //Navigate to RecipeDetailFragment with a mealId argument
 
     fun navigateToDetail(mealId: String) {
@@ -56,11 +66,13 @@ class RecipeActivity : AppCompatActivity() {
         }
         navController.navigate(R.id.action_global_recipeDetailFragment, bundle)
     }
-    fun playVideo(url: String) {
+    /*fun playVideo(url: String) {
         val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
         intent.data = android.net.Uri.parse(url)
         startActivity(intent)
     }
+    */
+
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()

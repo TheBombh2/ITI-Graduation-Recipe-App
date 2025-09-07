@@ -17,6 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_marginTop="8dp"
             app:titleTextColor="@color/red_pink"
+            app:popupTheme="@style/ToolbarPopupTheme"
             app:title="H! Belal"
             app:subtitleTextColor="@color/black"
             app:subtitle="What are you cooking today"
