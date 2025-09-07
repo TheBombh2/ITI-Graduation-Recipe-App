@@ -1,19 +1,27 @@
 package com.iti.graduation.recipeapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import com.iti.graduation.recipeapp.R
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.iti.graduation.recipeapp.AuthActivity
 import com.iti.graduation.recipeapp.RecipeActivity
 import com.iti.graduation.recipeapp.databinding.FragmentHomeBinding
 import com.iti.graduation.recipeapp.ui.adapters.MealAdapter
+import com.iti.graduation.recipeapp.utility.SharedPrefManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -21,6 +29,11 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var popularMealAdapter: MealAdapter
+
+    @Inject
+    lateinit var sharedPrefManager: SharedPrefManager
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +56,36 @@ class HomeFragment : Fragment() {
         observeData()
         viewModel.getRandomMeal()
         viewModel.getPopularMeals()
+        setupMenuOptions()
     }
+
+
+    private fun setupMenuOptions(){
+       binding.toolbar.inflateMenu(R.menu.menu_main)
+        binding.toolbar.setOnMenuItemClickListener {
+            item ->
+            when (item.itemId) {
+                R.id.action_sign_out -> {
+                    sharedPrefManager.logout()
+                    val intent = Intent(requireContext(), AuthActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    true
+                }
+
+                R.id.action_about -> {
+                    // ✅ Navigate to AboutFragment
+                    navigateToAbout()
+                    true
+                }
+
+                else -> false
+
+            }
+        }
+    }
+
+
 
     private fun setupRecyclerView() {
         // For popular meals (horizontal layout)
@@ -85,10 +127,16 @@ class HomeFragment : Fragment() {
         }
     }
     private fun navigateToDetail(mealId: String) {
-        val actionId = com.iti.graduation.recipeapp.R.id.action_homeFragment_to_recipeDetailFragment
+        val actionId = R.id.action_homeFragment_to_recipeDetailFragment
         val bundle = Bundle().apply { putString("mealId", mealId) }
         findNavController().navigate(actionId, bundle)
     }
+
+    private fun navigateToAbout() {
+        val actionId = R.id.action_homeFragment_to_aboutFragment
+        findNavController().navigate(actionId)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

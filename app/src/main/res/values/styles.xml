@@ -13,4 +13,10 @@
         <item name="cornerSizeBottomRight">24dp</item>
     </style>
 
+
+    <style name="ToolbarPopupTheme" parent="">
+        <item name="android:textColor">@color/brown_pod</item>
+    </style>
+
+
 </resources>

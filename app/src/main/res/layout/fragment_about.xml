@@ -4,22 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/about_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="About the Creator"
+        android:text="@string/about_the_creator"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        android:textColor="@color/red_pink"/>
 
     <TextView
+        android:layout_marginTop="8dp"
         android:id="@+id/about_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="This Recipe App was created by Gina and her team.\n\nIt helps users explore recipes, save favorites, and learn cooking easily!"
+        android:text="@string/credits"
         android:textSize="16sp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="@color/red_pink"/>
 </LinearLayout>

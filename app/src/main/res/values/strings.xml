@@ -47,4 +47,8 @@
     <string name="filter_image">Filter Image</string>
     <string name="recipe_master">Recipe Master</string>
     <string name="splash_description_text">Cook Smarter, Eat Better</string>
+    <string name="about_the_creator">About the Creators</string>
+    <string name="credits">Belal\n\n Abdallah\n\nPhilopatir\n\nGina\n\n\n\nIt helps users explore recipes, save favorites, and learn cooking easily!</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="about">About</string>
 </resources>

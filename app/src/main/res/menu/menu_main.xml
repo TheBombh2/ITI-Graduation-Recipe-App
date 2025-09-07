@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/action_sign_out"
-        android:title="Sign Out"
+        android:title="@string/sign_out"
         android:orderInCategory="100"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_about"
-        android:title="About the Creator"
+        android:title="@string/about"
         android:orderInCategory="101"
         app:showAsAction="never" />
 </menu>
