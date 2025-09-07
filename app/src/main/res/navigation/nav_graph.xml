@@ -5,6 +5,13 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/splashFragment">
 
+<!-- About -->
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.iti.graduation.recipeapp.ui.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.iti.graduation.recipeapp.ui.auth.SplashFragment"

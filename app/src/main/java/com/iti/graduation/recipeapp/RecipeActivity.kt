@@ -25,8 +25,33 @@ class RecipeActivity : AppCompatActivity() {
 
         userId = intent.getIntExtra("user_id",-1)
         userName = intent.getStringExtra("user_name")
-
+        
+        
         setupNavigation()
+        
+        // Inflate the menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    // Handle menu item clicks
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_sign_out -> {
+                // TODO: Clear SharedPreferences and go to Login screen
+                true
+            }
+            R.id.action_about -> {
+                // ✅ Navigate to AboutFragment
+                val navController = findNavController(R.id.nav_host_fragment)
+                navController.navigate(R.id.aboutFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    
+    
     }
 
     private fun setupNavigation() {
