@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import com.iti.graduation.recipeapp.R
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -63,10 +64,13 @@ class HomeFragment : Fragment() {
             item ->
             when (item.itemId) {
                 R.id.action_sign_out -> {
-                    sharedPrefManager.logout()
-                    val intent = Intent(requireContext(), AuthActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                   showConfirmationDialog(
+                       {
+                           sharedPrefManager.logout()
+                           val intent = Intent(requireContext(), AuthActivity::class.java)
+                           intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                           startActivity(intent)}
+                   )
                     true
                 }
 
@@ -82,7 +86,21 @@ class HomeFragment : Fragment() {
         }
     }
 
-
+    private fun showConfirmationDialog(onConfirm: () -> Unit) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.confirm_removal))
+            .setMessage(getString(R.string.sign_out_confirmation))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+                onConfirm() // Call the removal function
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .setCancelable(true)
+            .create()
+            .show()
+    }
 
     private fun setupRecyclerView() {
         // For popular meals (horizontal layout)

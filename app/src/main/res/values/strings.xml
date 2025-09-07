@@ -18,6 +18,7 @@
     <string name="remove_from_favorites">Remove from favorites</string>
     <string name="confirm_removal">Remove from Favorites</string>
     <string name="remove_favorite_confirmation">Are you sure you want to remove \"%s\" from your favorites?</string>
+    <string name="sign_out_confirmation">Are you sure you want to remove Sign Out?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="close_video" />
